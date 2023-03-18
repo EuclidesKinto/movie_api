@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Api\v1\UserResource;
 use App\Http\Resources\Api\v1\UsersResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -44,10 +45,19 @@ class UserController extends Controller
 
     /**
      * Display the specified resource.
+     * @param string $id
+     * @return UserResource | JsonResponse
      */
-    public function show(string $id)
+    public function show(string $id): UserResource | JsonResponse
     {
-        //
+        $user = User::query()->where('id', $id)->first();
+        if ($user) return new UserResource($user);
+
+        $statusCode = Response::HTTP_NOT_FOUND;
+        $response = [
+            'message' => ['Não existe usuário com esse id']
+        ];
+        return  response()->json($response, $statusCode);
     }
 
     /**
@@ -61,9 +71,8 @@ class UserController extends Controller
         DB::beginTransaction();
         try {
             $data = $request->all();
-            $userAuth = Auth::user();
             $user = User::query()->where('id', $id)->first();
-            if($user->id === $userAuth->id){
+            if($user->id === Auth::user()->id){
                 if(isset($data['email']) && $user->email !== $data['email']) {
                     $hasEmail = collect(User::query()->where('email', $data['email'])->get());
                     if(!$hasEmail->contains('email', $data['email'])){
@@ -113,6 +122,31 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $user = User::query()->where('id', $id)->first();
+            if($user->id === Auth::user()->id){
+                Auth::user()->tokens()->delete();
+                $user->delete();
+                DB::commit();
+                $statusCode = Response::HTTP_NO_CONTENT;
+                return response()->json([], $statusCode);
+            }
+            DB::rollBack();
+            $statusCode = Response::HTTP_FORBIDDEN;
+            $response = [
+                'message' => ['Você só pode deletar outro usuário']
+            ];
+            return  response()->json($response, $statusCode);
+
+        }catch (\Throwable $e) {
+            DB::rollBack();
+            Log::error(__CLASS__ . '::' . __FUNCTION__ . '=>' . $e->getMessage());
+            $statusCode = Response::HTTP_BAD_REQUEST;
+            $response = [
+                'message' => ['Erro no servidor. Tente novamente mais tarde.']
+            ];
+            return response()->json($response, $statusCode);
+        }
     }
 }
