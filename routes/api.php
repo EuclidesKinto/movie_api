@@ -10,8 +10,7 @@ Route::prefix('auth')->group(function (){
 });
 
 Route::middleware('auth:sanctum')->group(function (){
-    Route::get('/users', [UserController::class, 'index']);
-
+    Route::apiResource('/users', UserController::class);
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
