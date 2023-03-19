@@ -4,7 +4,7 @@ namespace App\Http\Requests\Api\v1;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class MovieStoreRequest extends FormRequest
+class MovieUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +23,7 @@ class MovieStoreRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'image' => 'required|mimes:jpg,png,jpeg|max:3048',
+            'image' => 'mimes:jpg,png,jpeg|max:3048',
             'description' => 'required|string|max:255'
         ];
     }

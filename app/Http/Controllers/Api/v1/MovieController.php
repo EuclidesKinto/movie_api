@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\v1\MovieStoreRequest;
+use App\Http\Requests\Api\v1\MovieUpdateRequest;
 use App\Http\Resources\Api\v1\MovieResource;
 use App\Http\Resources\Api\v1\MoviesResource;
 use App\Models\Movie;
@@ -40,7 +41,7 @@ class MovieController extends Controller
         DB::beginTransaction();
         try {
             if($request->hasFile('image')){
-                $path = $request->file('image')->store('public/movies');
+                $path = $request->file('image')->store('movies', 'public');
             }
             Movie::query()->create([
                 'name' => $request->name,
@@ -85,29 +86,31 @@ class MovieController extends Controller
 
     /**
      * Update the specified resource in storage.
+     * @param MovieUpdateRequest $request
+     * @param string $id
+     * @return JsonResponse
      */
-    public function update(Request $request, string $id)
+    public function update(MovieUpdateRequest $request, string $id): JsonResponse
     {
-//                dd($request->all(), $id);
         DB::beginTransaction();
         try {
             $data = $request->all();
             $movie = Movie::query()->where('id', $id)
                 ->with('user')
                 ->first();
-//            dd(Auth::user()->id === $movie->user_id);
             if(Auth::user()->id === $movie->user_id){
-                if($data['image']){
-                    if(Storage::disk('public')->exists('movies/'.$movie->image)){
-                        Storage::disk('public')->delete('movies/'.$movie->image);
+                if(isset($data['image'])){
+                    if(Storage::disk('public')->exists($movie->image)){
+                        Storage::disk('public')->delete($movie->image);
                     }
-                    $path = $request->file('image')->store('public/movies');
-                    $data['image'] = $path;
-                }else{
-                    $data['image'] = $movie->image;
+                    $path = $request->file('image')->store('movies', 'public');
                 }
-
-                $movie->update($data);
+                $movie->update([
+                    'name' => $request->name,
+                    'image' => $path?? $movie->image,
+                    'description' => $request->description,
+                    'user_id' => Auth::user()->id,
+                ]);
                 DB::commit();
                 $statusCode = Response::HTTP_CREATED;
                 $response = [
