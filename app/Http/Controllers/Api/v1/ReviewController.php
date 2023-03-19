@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\v1\ReviewRequest;
+use App\Http\Resources\Api\v1\ReviewsResource;
 use App\Models\Movie;
 use App\Models\Review;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -16,19 +19,32 @@ class ReviewController extends Controller
 {
     /**
      * Display a listing of the resource.
+     * @param string $id
+     * @return JsonResponse|AnonymousResourceCollection
      */
-    public function index(string $id)
+    public function index(string $id): JsonResponse|AnonymousResourceCollection
     {
-        $movie = Movie::query()->where('id', $id)->first();
+        $reviews = Review::query()
+            ->where('movie_id', $id)
+            ->orderBy('created_at', 'DESC')
+            ->get();
+
+       if($reviews) return ReviewsResource::collection($reviews);
+
+        $statusCode = Response::HTTP_NOT_FOUND;
+        $response = [
+            'message' => ['Não existe filme com esse id']
+        ];
+        return  response()->json($response, $statusCode);
     }
 
     /**
      * Store a newly created resource in storage.
-     * @param Request $request
+     * @param ReviewRequest $request
      * @param string $id
      * @return JsonResponse
      */
-    public function store(Request $request, string $id): JsonResponse
+    public function store(ReviewRequest $request, string $id): JsonResponse
     {
 
         try {
