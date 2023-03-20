@@ -43,7 +43,7 @@ O filme e os comentários do filme serão retornadas em formato JSON.
 
 Essas ações estõ cobertos com Testes usando PHPUnit.
 
-### Como executar o projeto
+### Como executar o projeto (Linux)
 Clone Repositório
 ```sh
 git clone https://github.com/EuclidesKinto/movie_api.git
