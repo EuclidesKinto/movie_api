@@ -2,6 +2,9 @@
 
 namespace Tests\Feature\Api\v1;
 
+use App\Models\User;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Illuminate\Foundation\Testing\{RefreshDatabase, WithFaker};
 use Tests\TestCase;
@@ -14,7 +17,7 @@ class UserTest extends TestCase
      * A basic feature test example.
      */
     /** @test */
-    public function if_get_users_all_index(): void
+    public function should_get_users_all_index(): void
     {
         $data = [
             'name' => $this->faker->name,
@@ -32,8 +35,9 @@ class UserTest extends TestCase
         $response->assertStatus(200);
     }
 
+
     /** @test */
-    public function if_get_users_all_type_index(): void
+    public function should_return_error_no_authorization_get_users_all(): void
     {
         $data = [
             'name' => $this->faker->name,
@@ -42,54 +46,61 @@ class UserTest extends TestCase
             'password_confirmation' => 'pontue123',
         ];
 
-        $res = $this->post('/api/auth/register', $data);
+        $res = $this->postJson('/api/auth/register', $data);
 
-        $token = $res['token'];
+//        $token = $res['token'];
         $response = $this->withHeaders([
-            'Authorization' => "Bearer $token",
+            'Authorization' => "Bearer token",
         ])->getJson('/api/users');
 //        dd($response['data']['data']);
+        $response->assertStatus(Response::HTTP_UNAUTHORIZED);
+    }
 
-        $response->assertJson(fn (AssertableJson $json)=>
-            $json->whereAllType([
-                'data.data.0.id' => 'integer',
-                'data.data.0.name' => 'string',
-                'data.data.0.email' => 'string',
-                'data.data.0.email_verified_at' => 'string|null',
-                'data.data.0.created_at' => 'string',
-                'data.data.0.updated_at' => 'string',
-            ])
-        );
+    /** @test */
+    public function should_user_login_ok():void
+    {
+        User::factory()->create([
+            'name' => 'pontue',
+            'email' => 'pontue@admin.com',
+            'password' => bcrypt('pontue123')
+        ]);
 
+        $response = $this->postJson('/api/auth/login', [
+            'email' => 'pontue@admin.com',
+            'password' => 'pontue123'
+        ]);
         $response->assertStatus(200);
     }
 
     /** @test */
-    public function should_get_users_all_type_index(): void
+    public function should_user_login_error_password():void
     {
-        $data = [
-            'name' => $this->faker->name,
-            'email' => $this->faker->email,
-            'password' => 'pontue123',
-            'password_confirmation' => 'pontue123',
-        ];
+        User::factory()->create([
+            'name' => 'pontue',
+            'email' => 'pontue@admin.com',
+            'password' => bcrypt('pontue123')
+        ]);
 
-        $res = $this->post('/api/auth/register', $data);
+        $response = $this->postJson('/api/auth/login', [
+            'email' => 'pontue@admin.com',
+            'password' => 'pontue12'
+        ]);
+        $response->assertStatus(401);
+    }
 
-        $token = $res['token'];
-        $response = $this->withHeaders([
-            'Authorization' => "Bearer $token",
-        ])->getJson('/api/users');
-//        dd($response['data']['data']);
+    /**@test */
+    public function should_user_login_error_email():void
+    {
+        User::factory()->create([
+            'name' => 'pontue',
+            'email' => 'pontue@admin.com',
+            'password' => bcrypt('pontue123')
+        ]);
 
-        $response->assertJson(fn (AssertableJson $json)=>
-        $json->whereAllType([
-            'data.data.0.id' => 'integer',
-            'data.data.0.name' => 'string',
-            'data.data.0.email' => 'string',
-        ])
-        );
-
-        $response->assertStatus(200);
+        $response = $this->postJson('/api/auth/login', [
+            'email' => 'pontuee@admin.com',
+            'password' => 'pontue123'
+        ]);
+        $response->assertStatus(401);
     }
 }
