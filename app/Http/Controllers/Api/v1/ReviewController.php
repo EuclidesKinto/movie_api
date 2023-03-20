@@ -27,7 +27,7 @@ class ReviewController extends Controller
         $reviews = Review::query()
             ->where('movie_id', $id)
             ->orderBy('created_at', 'DESC')
-            ->get();
+            ->paginate(10);
 
        if($reviews) return ReviewsResource::collection($reviews);
 

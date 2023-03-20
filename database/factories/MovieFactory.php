@@ -21,7 +21,7 @@ class MovieFactory extends Factory
     {
         return [
             'name' => $this->faker->name,
-            'description' => $this->faker->paragraph(3),
+            'description' => $this->faker->paragraph(1),
             'image' => $this->faker->imageUrl(),
             'user_id' => User::factory()->create()->id
         ];

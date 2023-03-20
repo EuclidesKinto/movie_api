@@ -20,7 +20,7 @@ class ReviewFactory extends Factory
     {
         return [
             'name' => $this->faker->name,
-            'rating' => $this->faker->randomNumber(9),
+            'rating' => $this->faker->randomNumber(1),
             'comment' => $this->faker->paragraph(1),
             'user_id' => User::factory()->create()->id,
             'movie_id' => Movie::factory()->create()->id
