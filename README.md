@@ -1,66 +1,125 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Movie API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Desafio
 
-## About Laravel
+Construir uma API Simples em Laravel(PHP) que permitisse Criar, Ler, Atualizar e Deletar 2 entidades diferentes e a minha escolha 
+foi a criação de uma lista de Filmes.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Descrição
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+A API de Filmes com Comentários permite que usuários logados possam criar, listar, ler, editar e deletar filmes, porém, somente o usuário dono do filme 
+pode deletar e se, tentar deletar um filme que não seja dele, será retornando um erro, bem como criar e ler comentários com nota.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Para ter acesso aos recursos da API, o usuário precisa primeiro se autenticar por meio de um token de acesso. Caso contrário, 
+a API irá retornar um erro de acesso negado.
 
-## Learning Laravel
+A criação de um novo filme requer que o usuário envie um objeto JSON contendo as informações do filme, como nome, descrição e imagem. O campo user_id será 
+preenchido com o ID do usuário logado.
+Depois de criado, o filme será atribuído a um ID único e retornado como resposta.A listagem de filmes disponíveis pode ser feita por 
+meio de uma solicitação GET. 
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Para ler as informações de um filme específico, o usuário deve enviar uma solicitação GET contendo o ID do filme desejado. 
+As informações do filme serão retornadas em formato JSON.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Para editar as informações de um filme específico, o usuário deve enviar uma solicitação POST contendo o ID do filme desejado e o _method=PUT no body
+da requisição.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Para excluir um filme, o usuário deve enviar uma solicitação DELETE contendo o ID do filme desejado. Se o filme não puder ser encontrado, 
+a API retornará um erro correspondente.
 
-## Laravel Sponsors
+Para criar um novo comentário, o usuário deve enviar um objeto JSON contendo a nota atribuída ao filme e o comentário 
+propriamente dito. O ID do filme e ID do usuário será preenchido no metodo store. 
+Depois de criado, o comentário será atribuído a um ID único e retornado como resposta.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+Para ler os comentários de um filme específico, o usuário deve enviar uma solicitação GET contendo o ID do filme desejado junto o 'reviews' no endpoint.
+Os comentários do filme serão retornadas em formato JSON.
 
-### Premium Partners
+Essas ações estõ cobertos com Testes usando PHPUnit.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+### Como executar o projeto
+Clone Repositório
+```sh
+git clone https://github.com/EuclidesKinto/movie_api.git
+```
 
-## Contributing
+Entre na pasta
+```sh
+cd movie_api
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Remova a pasta .git
+```sh
+rm -rf .git/
+```
 
-## Code of Conduct
+Crie o Arquivo .env
+```sh
+cp .env.example .env
+```
+Atualize as variáveis de ambiente do arquivo .env
+```dosini
+APP_NAME=Pontue
+APP_ENV=local
+APP_KEY=
+APP_DEBUG=true
+APP_URL=http://localhost
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+LOG_CHANNEL=stack
+LOG_DEPRECATIONS_CHANNEL=null
+LOG_LEVEL=debug
 
-## Security Vulnerabilities
+DB_CONNECTION=mysql
+DB_HOST=mysql
+DB_PORT=3306
+DB_DATABASE=movie_api
+DB_USERNAME=pontue
+DB_PASSWORD=pontue
+```
+Suba os containers do projeto
+```sh
+docker compose up -d
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Acessar o container
+```sh
+docker compose exec movie_app bash
+```
 
-## License
+Se tiver dificuldade, siga esses passos: ``` docker compose ps``` e copie o CONTAINER ID NAME da IMAGE Laravel:10
+```sh
+docker compose exec CONTAINER ID NAME bash
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Instalar as dependências do projeto
+```sh
+composer install
+```
+
+Gerar a key do projeto Laravel
+```sh
+php artisan key:generate
+```
+
+Criar o banco de dados com os seeders
+```sh
+php artisan migrate --seed
+```
+
+Acessar no insomnia ou POstman
+```sh
+http://localhost:8180/api/movies
+```
+
+### Como Logar
+
+Você deve esta logado para acessar os endpoints. Acesse o phpMyAdmin no endereço ```http://localhost:8081/```, 
+entre na tabela users e escolha um usuário. Copie o email e acesse o endereço ```http://localhost:8180/api/auth/login```
+a senha de todos os usuário criados é ```password```. 
+Se preferir, crie um usuário no endpoint ```http://localhost:8180/api/auth/register```.
+
+
+Rodar os Testes
+```sh
+php artisan test
+```
+
