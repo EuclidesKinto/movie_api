@@ -8,14 +8,13 @@ foi a criação de uma lista de Filmes.
 ## Descrição
 
 A API de Filmes com Comentários permite que usuários logados possam criar, listar, ler, editar e deletar filmes, porém, somente o usuário dono do filme 
-pode deletar e se, tentar deletar um filme que não seja dele, será retornando um erro, bem como criar e ler comentários com nota.
+pode deletar e se, tentar deletar um filme que não seja dele, será retornando um erro.
 
 Para ter acesso aos recursos da API, o usuário precisa primeiro se autenticar por meio de um token de acesso. Caso contrário, 
 a API irá retornar um erro de acesso negado.
 
-A criação de um novo filme requer que o usuário envie um objeto JSON contendo as informações do filme, como nome, descrição e imagem. O campo user_id será 
-preenchido com o ID do usuário logado.
-Depois de criado, o filme será atribuído a um ID único e retornado como resposta.A listagem de filmes disponíveis pode ser feita por 
+A criação de um novo filme requer que o usuário envie um objeto JSON contendo as informações do filme, como nome, descrição e imagem. O campo user_id será preenchido com o ID do usuário logado.
+Depois de criado, o filme será atribuído a um ID único e retornado uma mensagem de sucesso.A listagem de filmes disponíveis pode ser feita por 
 meio de uma solicitação GET. 
 
 Para ler as informações de um filme específico, o usuário deve enviar uma solicitação GET contendo o ID do filme desejado. 
@@ -35,10 +34,10 @@ a API retornará um erro correspondente.
 
 Para criar um novo comentário, o usuário deve enviar um objeto JSON contendo a nota atribuída ao filme e o comentário 
 propriamente dito. O ID do filme e ID do usuário será preenchido no metodo store. 
-Depois de criado, o comentário será atribuído a um ID único e retornado como resposta.
+Depois de criado, o comentário será atribuído a um ID único e retornado uma mensagem de sucesso.
 
 Para ler os comentários de um filme específico, o usuário deve enviar uma solicitação GET contendo o ID do filme desejado junto o 'reviews' no endpoint.
-Os comentários do filme serão retornadas em formato JSON.
+O filme e os comentários do filme serão retornadas em formato JSON.
 
 ![Screenshot from 2023-03-20 12-03-40](https://user-images.githubusercontent.com/57235071/226381446-34253724-9623-47ce-b76c-36c6c4ecaae4.png)
 
