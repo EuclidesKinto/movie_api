@@ -2,22 +2,22 @@
 
 ## Desafio
 
-Construir uma API Simples em Laravel(PHP) que permitisse Criar, Ler, Atualizar e Deletar 2 entidades diferentes e a minha escolha 
+Construir uma API Simples em Laravel(PHP) que permitisse Criar, Ler, Atualizar e Deletar 2 entidades diferentes e a minha escolha
 foi a criação de uma lista de Filmes.
 
 ## Descrição
 
-A API de Filmes com Comentários permite que usuários logados possam criar, listar, ler, editar e deletar filmes, porém, somente o usuário dono do filme 
+A API de Filmes com Comentários permite que usuários logados possam criar, listar, ler, editar e deletar filmes, porém, somente o usuário dono do filme
 pode deletar e se, tentar deletar um filme que não seja dele, será retornando um erro.
 
-Para ter acesso aos recursos da API, o usuário precisa primeiro se autenticar por meio de um token de acesso. Caso contrário, 
+Para ter acesso aos recursos da API, o usuário precisa primeiro se autenticar por meio de um token de acesso. Caso contrário,
 a API irá retornar um erro de acesso negado.
 
 A criação de um novo filme requer que o usuário envie um objeto JSON contendo as informações do filme, como nome, descrição e imagem. O campo user_id será preenchido com o ID do usuário logado.
-Depois de criado, o filme será atribuído a um ID único e retornado uma mensagem de sucesso.A listagem de filmes disponíveis pode ser feita por 
-meio de uma solicitação GET. 
+Depois de criado, o filme será atribuído a um ID único e retornado uma mensagem de sucesso.A listagem de filmes disponíveis pode ser feita por
+meio de uma solicitação GET.
 
-Para ler as informações de um filme específico, o usuário deve enviar uma solicitação GET contendo o ID do filme desejado. 
+Para ler as informações de um filme específico, o usuário deve enviar uma solicitação GET contendo o ID do filme desejado.
 As informações do filme serão retornadas em formato JSON.
 
 ![Screenshot from 2023-03-20 12-09-27](https://user-images.githubusercontent.com/57235071/226382952-71b02897-21c8-4544-bce8-c649421964e7.png)
@@ -29,11 +29,11 @@ da requisição.
 
 ![Screenshot from 2023-03-20 12-05-46](https://user-images.githubusercontent.com/57235071/226381986-5f5ff2ee-2c60-4c2d-aff1-c3ba65e6e7c8.png)
 
-Para excluir um filme, o usuário deve enviar uma solicitação DELETE contendo o ID do filme desejado. Se o filme não puder ser encontrado, 
+Para excluir um filme, o usuário deve enviar uma solicitação DELETE contendo o ID do filme desejado. Se o filme não puder ser encontrado,
 a API retornará um erro correspondente.
 
-Para criar um novo comentário, o usuário deve enviar um objeto JSON contendo a nota atribuída ao filme e o comentário 
-propriamente dito. O ID do filme e ID do usuário será preenchido no metodo store. 
+Para criar um novo comentário, o usuário deve enviar um objeto JSON contendo a nota atribuída ao filme e o comentário
+propriamente dito. O ID do filme e ID do usuário será preenchido no metodo store.
 Depois de criado, o comentário será atribuído a um ID único e retornado uma mensagem de sucesso.
 
 Para ler os comentários de um filme específico, o usuário deve enviar uma solicitação GET contendo o ID do filme desejado junto o 'reviews' no endpoint.
@@ -114,9 +114,9 @@ http://localhost:8180/api/movies
 
 ### Como Logar
 
-Você deve esta logado para acessar os endpoints. Acesse o phpMyAdmin no endereço ```http://localhost:8081/```, 
+Você deve esta logado para acessar os endpoints. Acesse o phpMyAdmin no endereço ```http://localhost:8081/```,
 entre na tabela users e escolha um usuário. Copie o email e acesse o endereço ```http://localhost:8180/api/auth/login```
-a senha de todos os usuário criados é ```password```. 
+a senha de todos os usuário criados é ```password```.
 Se preferir, crie um usuário no endpoint ```http://localhost:8180/api/auth/register```.
 
 ![Screenshot from 2023-03-20 11-59-41](https://user-images.githubusercontent.com/57235071/226380296-8f398347-64d6-4d9d-b9d6-fbfb0f589d93.png)
@@ -130,4 +130,18 @@ php artisan test
 ### Route List
 
 ![Screenshot from 2023-03-20 11-53-14](https://user-images.githubusercontent.com/57235071/226379308-970271ce-912f-41b9-9013-9bf0d4f3255e.png)
+
+## About Laravel
+
+Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+
+
+### Exemplo de outros Projetos
+- [Construção de um ADMIN com ACL(Access Control List)](https://github.com/EuclidesKinto/filament-acl).
+- [4 projetos com Vue3](https://github.com/EuclidesKinto/vue-projects).
+- [Componentes Blade - Laravel](https://github.com/EuclidesKinto/components).
+- [Conversor de Moedas com Vue3](https://github.com/EuclidesKinto/conversor-moedas).
+- [Projeto Site UXDesign - Trabalho da Faculdade](https://github.com/EuclidesKinto/trabalho-ux-html).
+- [Projeto em Nuxtjs](https://github.com/EuclidesKinto/lu_estilo_front).
+- [API em Golang](https://github.com/EuclidesKinto/backend_api).
 
