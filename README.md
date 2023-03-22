@@ -131,9 +131,6 @@ php artisan test
 
 ![Screenshot from 2023-03-20 11-53-14](https://user-images.githubusercontent.com/57235071/226379308-970271ce-912f-41b9-9013-9bf0d4f3255e.png)
 
-## About Laravel
-
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
 
 ### Exemplo de outros Projetos
